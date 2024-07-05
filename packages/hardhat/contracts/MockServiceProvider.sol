@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 contract MockServiceProvider {
     struct Subscription {
-        bytes32 id;
+        uint256 id;
         string name;
         uint256 fee;
         bool isActive;
@@ -15,8 +15,8 @@ contract MockServiceProvider {
     }
 
     // Mappings to store subscription types and user subscriptions
-    mapping(bytes32 => Subscription) public subscriptionTypes;
-    mapping(address => mapping(bytes32 => UserSubscription)) public userSubscriptions;
+    mapping(uint256 => Subscription) public subscriptionTypes;
+    mapping(address => mapping(uint256 => UserSubscription)) public userSubscriptions;
 
     // Array and counter for subscription types
     Subscription[] public subscriptionTypesArray;
@@ -28,8 +28,8 @@ contract MockServiceProvider {
 
     // Events to log actions
     event SubscriptionTypeAdded(address indexed adder, Subscription subscription);
-    event UserSubscribed(address indexed user, bytes32 indexed subscriptionId);
-    event UserUnsubscribed(address indexed user, bytes32 indexed subscriptionId);
+    event UserSubscribed(address indexed user, uint256 indexed subscriptionId);
+    event UserUnsubscribed(address indexed user, uint256 indexed subscriptionId);
 
     // Custom errors
     error Unauthorized();
@@ -65,8 +65,8 @@ contract MockServiceProvider {
     }
 
     // Function to add a new subscription type
-    function addSubscriptionType(Subscription memory subscription) public onlyOwner {
-        bytes32 subscriptionId = keccak256(abi.encodePacked(subscription.name));
+     function addSubscriptionType(string memory name, uint256 fee) public onlyOwner {
+        uint256 subscriptionId = numberOfSubscriptionTypes;
         
         // Check if subscription type already exists
         if (subscriptionTypes[subscriptionId].isActive) {
@@ -74,9 +74,16 @@ contract MockServiceProvider {
         }
         
         // Check if the fee is valid
-        if (subscription.fee <= 0) {
+        if (fee <= 0) {
             revert InvalidFee();
         }
+
+        Subscription memory subscription = Subscription({
+            id: subscriptionId,
+            name: name,
+            fee: fee,
+            isActive: true
+        });
 
         subscriptionTypes[subscriptionId] = subscription;
         subscriptionTypesArray.push(subscription);
@@ -85,8 +92,9 @@ contract MockServiceProvider {
         emit SubscriptionTypeAdded(msg.sender, subscription);
     }
 
+
     // Function to subscribe a user to a subscription type
-    function subscribe(address user, bytes32 subscriptionId) external onlyStateChannel {
+    function subscribe(address user,uint256 subscriptionId) external onlyStateChannel {
         // Check if the subscription type is valid
         if (!subscriptionTypes[subscriptionId].isActive) {
             revert InvalidSubscriptionType();
@@ -97,7 +105,7 @@ contract MockServiceProvider {
     }
 
     // Function to unsubscribe a user from a subscription type
-    function unsubscribe(address user, bytes32 subscriptionId) external onlyStateChannel {
+    function unsubscribe(address user, uint256 subscriptionId) external onlyStateChannel {
         if (!userSubscriptions[user][subscriptionId].isActive) {
             revert NotSubscribed();
         }
@@ -107,13 +115,13 @@ contract MockServiceProvider {
     }
 
     // Function to check if a user is subscribed
-    function isSubscribed(address user, bytes32 subscriptionId) external view returns (bool) {
+    function isSubscribed(address user, uint256 subscriptionId) external view returns (bool) {
         UserSubscription memory sub = userSubscriptions[user][subscriptionId];
         return sub.isActive && sub.expirationTime > block.timestamp;
     }
 
     // Function to get the fee for a subscription type
-    function getSubscriptionFee(bytes32 subscriptionId) external view returns (uint256) {
+    function getSubscriptionFee(uint256 subscriptionId) external view returns (uint256) {
         return subscriptionTypes[subscriptionId].fee;
     }
 }

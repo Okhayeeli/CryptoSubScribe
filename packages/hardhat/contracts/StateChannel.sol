@@ -7,42 +7,26 @@ contract SimpleStateChannel {
     MockServiceProvider public serviceProvider;
     mapping(address => uint256) public balances;
 
-    // Events to log actions
     event ChannelOpened(address indexed user, uint256 amount);
     event ChannelClosed(address indexed user, uint256 amount);
-    event SubscriptionPurchased(address indexed user, bytes32 indexed subscriptionId);
-    event SubscriptionCancelled(address indexed user, bytes32 indexed subscriptionId);
+    event SubscriptionPurchased(address indexed user, uint256 indexed subscriptionId);
 
-    // Custom errors
-    error InvalidAmount();
-    error InsufficientBalance();
-    error InvalidSignature();
-
-    // Constructor to set the service provider address
     constructor(address _serviceProviderAddress) {
         serviceProvider = MockServiceProvider(_serviceProviderAddress);
     }
 
-    // Function to open a channel and deposit ETH
     function openChannel() external payable {
-        if (msg.value <= 0) {
-            revert InvalidAmount();
-        }
+        require(msg.value > 0, "Must deposit some ETH");
         balances[msg.sender] += msg.value;
         emit ChannelOpened(msg.sender, msg.value);
     }
 
-    // Function to subscribe to a service
-    function subscribe(bytes32 subscriptionId, bytes memory signature) external {
+    function subscribe(uint256 subscriptionId, bytes memory signature) external {
         bytes32 message = keccak256(abi.encodePacked(msg.sender, subscriptionId, "subscribe"));
-        if (!verifySignature(message, signature)) {
-            revert InvalidSignature();
-        }
+        require(verifySignature(message, signature), "Invalid signature");
 
         uint256 fee = serviceProvider.getSubscriptionFee(subscriptionId);
-        if (balances[msg.sender] < fee) {
-            revert InsufficientBalance();
-        }
+        require(balances[msg.sender] >= fee, "Insufficient balance");
 
         balances[msg.sender] -= fee;
         serviceProvider.subscribe(msg.sender, subscriptionId);
@@ -50,18 +34,13 @@ contract SimpleStateChannel {
         emit SubscriptionPurchased(msg.sender, subscriptionId);
     }
 
-    // Function to unsubscribe from a service
-    function unsubscribe(bytes32 subscriptionId) external {
+    function unsubscribe(uint256 subscriptionId) external {
         serviceProvider.unsubscribe(msg.sender, subscriptionId);
-        emit SubscriptionCancelled(msg.sender, subscriptionId);
     }
 
-    // Function to close the channel and withdraw balance
     function closeChannel() external {
         uint256 amount = balances[msg.sender];
-        if (amount <= 0) {
-            revert InvalidAmount();
-        }
+        require(amount > 0, "No balance to withdraw");
 
         balances[msg.sender] = 0;
         payable(msg.sender).transfer(amount);

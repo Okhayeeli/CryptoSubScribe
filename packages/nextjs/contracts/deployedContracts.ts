@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     MockServiceProvider: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0x59b670e9fA9D0A427751Af201D676719a970857b",
       abi: [
         {
           inputs: [],
@@ -51,9 +51,9 @@ const deployedContracts = {
             {
               components: [
                 {
-                  internalType: "bytes32",
+                  internalType: "uint256",
                   name: "id",
-                  type: "bytes32",
+                  type: "uint256",
                 },
                 {
                   internalType: "string",
@@ -91,9 +91,9 @@ const deployedContracts = {
             },
             {
               indexed: true,
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "UserSubscribed",
@@ -110,9 +110,9 @@ const deployedContracts = {
             },
             {
               indexed: true,
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "UserUnsubscribed",
@@ -121,31 +121,14 @@ const deployedContracts = {
         {
           inputs: [
             {
-              components: [
-                {
-                  internalType: "bytes32",
-                  name: "id",
-                  type: "bytes32",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "fee",
-                  type: "uint256",
-                },
-                {
-                  internalType: "bool",
-                  name: "isActive",
-                  type: "bool",
-                },
-              ],
-              internalType: "struct MockServiceProvider.Subscription",
-              name: "subscription",
-              type: "tuple",
+              internalType: "string",
+              name: "name",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "fee",
+              type: "uint256",
             },
           ],
           name: "addSubscriptionType",
@@ -156,9 +139,9 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "getSubscriptionFee",
@@ -180,9 +163,9 @@ const deployedContracts = {
               type: "address",
             },
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "isSubscribed",
@@ -256,9 +239,9 @@ const deployedContracts = {
               type: "address",
             },
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "subscribe",
@@ -269,17 +252,17 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "subscriptionTypes",
           outputs: [
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "id",
-              type: "bytes32",
+              type: "uint256",
             },
             {
               internalType: "string",
@@ -311,9 +294,9 @@ const deployedContracts = {
           name: "subscriptionTypesArray",
           outputs: [
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "id",
-              type: "bytes32",
+              type: "uint256",
             },
             {
               internalType: "string",
@@ -342,9 +325,9 @@ const deployedContracts = {
               type: "address",
             },
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "unsubscribe",
@@ -360,9 +343,9 @@ const deployedContracts = {
               type: "address",
             },
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "userSubscriptions",
@@ -385,7 +368,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     SimpleStateChannel: {
-      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      address: "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
       abi: [
         {
           inputs: [
@@ -397,21 +380,6 @@ const deployedContracts = {
           ],
           stateMutability: "nonpayable",
           type: "constructor",
-        },
-        {
-          inputs: [],
-          name: "InsufficientBalance",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "InvalidAmount",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "InvalidSignature",
-          type: "error",
         },
         {
           anonymous: false,
@@ -462,28 +430,9 @@ const deployedContracts = {
             },
             {
               indexed: true,
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
-            },
-          ],
-          name: "SubscriptionCancelled",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "user",
-              type: "address",
-            },
-            {
-              indexed: true,
-              internalType: "bytes32",
-              name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "SubscriptionPurchased",
@@ -538,9 +487,9 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
             {
               internalType: "bytes",
@@ -556,9 +505,9 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "bytes32",
+              internalType: "uint256",
               name: "subscriptionId",
-              type: "bytes32",
+              type: "uint256",
             },
           ],
           name: "unsubscribe",
