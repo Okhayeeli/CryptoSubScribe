@@ -45,12 +45,7 @@ const deployMockServiceProvider: DeployFunction = async function (hre: HardhatRu
   ];
 
   for (const sub of subscriptionTypes) {
-    await mockServiceProviderContract.addSubscriptionType({
-      id: hre.ethers.id(sub.name),
-      name: sub.name,
-      fee: sub.fee,
-      isActive: true,
-    });
+    await mockServiceProviderContract.addSubscriptionType(sub.name, sub.fee);
     console.log(`Added subscription type: ${sub.name}`);
   }
 };
