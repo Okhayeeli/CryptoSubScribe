@@ -44,9 +44,6 @@ const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRu
       `${i + 1}. Name: ${subscription.name}, Price: ${hre.ethers.formatEther(subscription.price)} ETH, Duration: ${subscription.duration / (24 * 60 * 60)} days`,
     );
   }
-
-  const owner = await SubscriptionManager.owner();
-  console.log("\nContract owner:", owner);
 };
 
 export default deploySubscriptionManager;
