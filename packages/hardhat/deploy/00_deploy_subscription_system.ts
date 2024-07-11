@@ -29,13 +29,24 @@ const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRu
     { name: "Mobile Plan", price: hre.ethers.parseEther("0.006"), duration: 30 * 24 * 60 * 60 },
   ];
 
+  // Add subscriptions
   for (const sub of subscriptions) {
     await SubscriptionManager.addSubscription(sub.name, sub.price, sub.duration);
     console.log(`Added subscription: ${sub.name}`);
   }
 
+  // Display all subscriptions
+  console.log("\nAll Subscriptions:");
+  const getsubscriptionCount = await SubscriptionManager.subscriptionCount();
+  for (let i = 0; i < getsubscriptionCount; i++) {
+    const subscription = await SubscriptionManager.getAllSubscriptions(i);
+    console.log(
+      `${i + 1}. Name: ${subscription.name}, Price: ${hre.ethers.formatEther(subscription.price)} ETH, Duration: ${subscription.duration / (24 * 60 * 60)} days`,
+    );
+  }
+
   const owner = await SubscriptionManager.owner();
-  console.log("Contract owner:", owner);
+  console.log("\nContract owner:", owner);
 };
 
 export default deploySubscriptionManager;
