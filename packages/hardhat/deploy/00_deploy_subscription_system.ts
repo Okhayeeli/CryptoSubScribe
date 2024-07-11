@@ -6,15 +6,13 @@ const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRu
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  console.log("Deploying from account:", deployer);
-
-  const subscriptionManager = await deploy("SubscriptionManager", {
+  await deploy("SubscriptionManager", {
     from: deployer,
     args: [],
     log: true,
   });
 
-  console.log("SubscriptionManager deployed to:", subscriptionManager.address);
+  console.log("SubscriptionManager deployed successfully");
 
   const SubscriptionManager = await hre.ethers.getContract<Contract>("SubscriptionManager", deployer);
 
@@ -29,22 +27,28 @@ const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRu
     { name: "Mobile Plan", price: hre.ethers.parseEther("0.006"), duration: 30 * 24 * 60 * 60 },
   ];
 
-  // Add subscriptions
-  for (const sub of subscriptions) {
-    await SubscriptionManager.addSubscription(sub.name, sub.price, sub.duration);
-    console.log(`Added subscription: ${sub.name}`);
+  for (let i = 0; i < subscriptions.length; i++) {
+    const sub = subscriptions[i];
+    const existingSub = await SubscriptionManager.subscriptions(i);
+
+    if (existingSub.name === "") {
+      // Add new subscription if it doesn't exist
+      await SubscriptionManager.addSubscription(sub.name, sub.price, sub.duration);
+      console.log(`Added new subscription: ${sub.name}`);
+    } else {
+      console.log(`Subscription already exists: ${sub.name}`);
+    }
   }
 
-  // Display all subscriptions
-  console.log("\nAll Subscriptions:");
-  const getsubscriptionCount = await SubscriptionManager.subscriptionCount();
-  for (let i = 0; i < getsubscriptionCount; i++) {
-    const subscription = await SubscriptionManager.getAllSubscriptions(i);
-    console.log(
-      `${i + 1}. Name: ${subscription.name}, Price: ${hre.ethers.formatEther(subscription.price)} ETH, Duration: ${subscription.duration / (24 * 60 * 60)} days`,
-    );
-  }
+  // Fetch and log all subscriptions
+  const allSubscriptions = await SubscriptionManager.getAllSubscriptions();
+  console.log("All Subscriptions:", allSubscriptions);
+
+  // Transfer ownership
+  await SubscriptionManager.transferOwnership("0xFFF17C3C139Cb65028aFE4D192A7E630e9F5C99e");
+  console.log("Ownership transferred");
 };
 
 export default deploySubscriptionManager;
+
 deploySubscriptionManager.tags = ["SubscriptionManager"];
