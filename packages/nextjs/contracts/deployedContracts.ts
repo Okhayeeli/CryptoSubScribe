@@ -6,378 +6,11 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
   31337: {
-    MockServiceProvider: {
-      address: "0x59b670e9fA9D0A427751Af201D676719a970857b",
+    SubscriptionManager: {
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: [
         {
           inputs: [],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          inputs: [],
-          name: "InvalidFee",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "InvalidSubscriptionType",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "NotSubscribed",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "SubscriptionTypeExists",
-          type: "error",
-        },
-        {
-          inputs: [],
-          name: "Unauthorized",
-          type: "error",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "adder",
-              type: "address",
-            },
-            {
-              components: [
-                {
-                  internalType: "uint256",
-                  name: "id",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "fee",
-                  type: "uint256",
-                },
-                {
-                  internalType: "bool",
-                  name: "isActive",
-                  type: "bool",
-                },
-              ],
-              indexed: false,
-              internalType: "struct MockServiceProvider.Subscription",
-              name: "subscription",
-              type: "tuple",
-            },
-          ],
-          name: "SubscriptionTypeAdded",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "user",
-              type: "address",
-            },
-            {
-              indexed: true,
-              internalType: "uint256",
-              name: "subscriptionId",
-              type: "uint256",
-            },
-          ],
-          name: "UserSubscribed",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "user",
-              type: "address",
-            },
-            {
-              indexed: true,
-              internalType: "uint256",
-              name: "subscriptionId",
-              type: "uint256",
-            },
-          ],
-          name: "UserUnsubscribed",
-          type: "event",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "name",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "fee",
-              type: "uint256",
-            },
-          ],
-          name: "addSubscriptionType",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "subscriptionId",
-              type: "uint256",
-            },
-          ],
-          name: "getSubscriptionFee",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "user",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "subscriptionId",
-              type: "uint256",
-            },
-          ],
-          name: "isSubscribed",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "numberOfSubscriptionTypes",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "owner",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_stateChannelAddress",
-              type: "address",
-            },
-          ],
-          name: "setStateChannelAddress",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "stateChannelAddress",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "user",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "subscriptionId",
-              type: "uint256",
-            },
-          ],
-          name: "subscribe",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "subscriptionTypes",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "id",
-              type: "uint256",
-            },
-            {
-              internalType: "string",
-              name: "name",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "fee",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "isActive",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "subscriptionTypesArray",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "id",
-              type: "uint256",
-            },
-            {
-              internalType: "string",
-              name: "name",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "fee",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "isActive",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "user",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "subscriptionId",
-              type: "uint256",
-            },
-          ],
-          name: "unsubscribe",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "userSubscriptions",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "isActive",
-              type: "bool",
-            },
-            {
-              internalType: "uint256",
-              name: "expirationTime",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-      ],
-      inheritedFunctions: {},
-    },
-    SimpleStateChannel: {
-      address: "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1",
-      abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_serviceProviderAddress",
-              type: "address",
-            },
-          ],
           stateMutability: "nonpayable",
           type: "constructor",
         },
@@ -393,7 +26,7 @@ const deployedContracts = {
             {
               indexed: false,
               internalType: "uint256",
-              name: "amount",
+              name: "finalBalance",
               type: "uint256",
             },
           ],
@@ -412,11 +45,30 @@ const deployedContracts = {
             {
               indexed: false,
               internalType: "uint256",
-              name: "amount",
+              name: "balance",
               type: "uint256",
             },
           ],
           name: "ChannelOpened",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
           type: "event",
         },
         {
@@ -435,8 +87,138 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
+          name: "SubscriptionActivated",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "name",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "price",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "duration",
+              type: "uint256",
+            },
+          ],
+          name: "SubscriptionAdded",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "subscriptionId",
+              type: "uint256",
+            },
+          ],
+          name: "SubscriptionDeactivated",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "subscriptionId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "price",
+              type: "uint256",
+            },
+          ],
           name: "SubscriptionPurchased",
           type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "Withdraw",
+          type: "event",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "name",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "price",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "duration",
+              type: "uint256",
+            },
+          ],
+          name: "addSubscription",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "subscriptionId",
+              type: "uint256",
+            },
+          ],
+          name: "buySubscription",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
         },
         {
           inputs: [
@@ -446,11 +228,21 @@ const deployedContracts = {
               type: "address",
             },
           ],
-          name: "balances",
+          name: "channels",
           outputs: [
             {
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+            {
               internalType: "uint256",
-              name: "",
+              name: "balance",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "lastSettled",
               type: "uint256",
             },
           ],
@@ -465,20 +257,73 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [],
-          name: "openChannel",
-          outputs: [],
-          stateMutability: "payable",
+          inputs: [
+            {
+              internalType: "address",
+              name: "user",
+              type: "address",
+            },
+          ],
+          name: "getActiveSubscriptions",
+          outputs: [
+            {
+              internalType: "bool[]",
+              name: "",
+              type: "bool[]",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
           inputs: [],
-          name: "serviceProvider",
+          name: "getAllSubscriptions",
           outputs: [
             {
-              internalType: "contract MockServiceProvider",
+              components: [
+                {
+                  internalType: "uint256",
+                  name: "id",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "name",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "price",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "duration",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct SubscriptionManager.Subscription[]",
               name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "user",
               type: "address",
+            },
+          ],
+          name: "getChannelBalance",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -488,16 +333,114 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
-              name: "subscriptionId",
+              name: "id",
+              type: "uint256",
+            },
+          ],
+          name: "getSubscriptionDetails",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "",
               type: "uint256",
             },
             {
-              internalType: "bytes",
-              name: "signature",
-              type: "bytes",
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
             },
           ],
-          name: "subscribe",
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "openChannel",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "subscriptionCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "subscriptions",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "name",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "price",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "duration",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -506,17 +449,21 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
-              name: "subscriptionId",
+              name: "amount",
               type: "uint256",
             },
           ],
-          name: "unsubscribe",
+          name: "withdraw",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
       ],
-      inheritedFunctions: {},
+      inheritedFunctions: {
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
     },
   },
 } as const;
