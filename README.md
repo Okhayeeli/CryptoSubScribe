@@ -12,7 +12,7 @@
        🎮 Potential for Gaming: Consider extending state channel functionality to gaming and interactive applications for real-time, feeless transactions.
 
 
-Gefore you begin, you need to install the following tools:
+Before you begin, you need to install the following tools:
 
 Node (>= v18.17)
 Yarn (v1 or v2+)
