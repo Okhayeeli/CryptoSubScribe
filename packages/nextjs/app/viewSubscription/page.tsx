@@ -6,8 +6,6 @@ import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
-// Adjust the import path if necessary
-
 const useActiveSubscriptions = () => {
   const { address } = useAccount();
   const { data: activeSubscriptions, isLoading: isLoadingActiveSubscriptions } = useScaffoldReadContract({
@@ -36,7 +34,12 @@ const ViewSubscription: React.FC = () => {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   }
 
-  const activeSubscriptionList = allSubscriptions?.filter((subscription, index) => activeSubscriptions?.[index] ?? []);
+  const activeSubscriptionList =
+    allSubscriptions?.filter(
+      subscription =>
+        Array.isArray(activeSubscriptions) &&
+        activeSubscriptions.some(activeSubscription => activeSubscription.id === subscription.id),
+    ) ?? [];
 
   return (
     <div className="flex items-center flex-col flex-grow pt-10">
