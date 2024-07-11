@@ -35,18 +35,15 @@ const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRu
       // Add new subscription if it doesn't exist
       await SubscriptionManager.addSubscription(sub.name, sub.price, sub.duration);
       console.log(`Added new subscription: ${sub.name}`);
-    } else if (
-      existingSub.name !== sub.name ||
-      existingSub.price.toString() !== sub.price.toString() ||
-      existingSub.duration.toString() !== sub.duration.toString()
-    ) {
-      // Update existing subscription if details have changed
-      await SubscriptionManager.updateSubscription(i, sub.name, sub.price, sub.duration);
-      console.log(`Updated subscription: ${sub.name}`);
     } else {
-      console.log(`Subscription already exists and is up to date: ${sub.name}`);
+      console.log(`Subscription already exists: ${sub.name}`);
     }
   }
+
+  // Fetch and log all subscriptions
+  const allSubscriptions = await SubscriptionManager.getAllSubscriptions();
+  console.log("All Subscriptions:", allSubscriptions);
+
   // Transfer ownership
   await SubscriptionManager.transferOwnership("0xFFF17C3C139Cb65028aFE4D192A7E630e9F5C99e");
   console.log("Ownership transferred");
