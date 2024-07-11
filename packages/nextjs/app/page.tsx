@@ -31,8 +31,8 @@ const Home: NextPage = () => {
             <Address address={address} />
             <Balance address={address} />
           </div>
-
           <ChannelManager />
+          git push--set -upstream origin updateApp{" "}
         </>
       ) : (
         <p>Please connect your wallet to use the Subscription Manager.</p>

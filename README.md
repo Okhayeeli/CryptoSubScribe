@@ -1,39 +1,42 @@
 # 🏗 Crypto-Subscribe
 
-CryptoSubScribe is a decentralized subscription management platform built on Ethereum using Scaffold-ETH. It allows users to create and manage cryptocurrency-based subscriptions, leveraging state channels for efficient, low-cost transactions. The platform includes a mock subscription provider to demonstrate functionality for services not yet accepting crypto payments.
+  CryptoSubScribe is a decentralized subscription management platform built on Ethereum using Scaffold-ETH. It allows users to create and manage cryptocurrency-based subscriptions, leveraging state channels for efficient, low-cost transactions. The platform includes a mock subscription provider to demonstrate functionality for services not yet accepting crypto payments.
+
+## Features
+  🌐 State Channels: Utilize Ethereum state channels to manage subscriptions off-chain, reducing transaction costs and latency.
+  💸 Subscription Payments: Pay for subscriptions with deposited ETH, ensuring quick and cost-effective transactions.
+
+  # ⏱️ Future Additions:
+  Duration Calculation: Calculate subscription durations off-chain to streamline user experience.
+       Off-chain Messaging: Explore using web3 to send messages without gas fees, enhancing usability.
+       🎮 Potential for Gaming: Consider extending state channel functionality to gaming and interactive applications for real-time, feeless transactions.
 
 
-## Requirements
+Gefore you begin, you need to install the following tools:
 
-Before you begin, you need to install the following tools:
-
-- [Node (>= v18.17)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
-
-## Quickstart
-
-To get started with Crypto-Subscribe built on Scaffold-ETH, follow the steps below:
+Node (>= v18.17)
+Yarn (v1 or v2+)
+Git
 
 1. Clone this repo & install dependencies
 
 ```
 git clone https://github.com/Okhayeeli/CryptoSubScribe.git
 cd CryptoSubScribe
+git checkout CryptoSubScribe
 yarn install
 ```
 
-2. Run a local network in the first terminal:
+2. In the same terminal, start your local network (a local instance of a blockchain):
 
-```
 yarn chain
 ```
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
 
-3. On a second terminal, deploy the test contract:
+3. in a second terminal window, 🛰 deploy your contract (locally):
 
-```
+cd challenge-0-simple-nft
 yarn deploy
 ```
 
@@ -65,3 +68,19 @@ To know more about its features, check out our [website](https://scaffoldeth.io)
 We welcome contributions to Scaffold-ETH 2!
 
 Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+
+## Using CryptoSubScribe
+1. Opening a State Channel:
+    1. Deposit ETH to open a state channel.
+    2.   Utilize the channel to manage multiple subscriptions.
+
+2. Paying for Subscriptions:
+    1. Use the deposited ETH to pay for subscribed services without incurring excessive gas fees.
+
+3. Future Enhancements:
+     1. Duration Calculation: Implement off-chain duration calculation to automate subscription management.
+     2. Off-chain Messaging: Integrate web3 to enable feeless communication for enhanced user interactions.
+
+     ## Acknowledgments
+     Scaffold-ETH for providing a robust framework for Ethereum development.
+     The Ethereum community for continuous support and development.
