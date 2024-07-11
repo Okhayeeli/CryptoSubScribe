@@ -27,14 +27,29 @@ const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRu
     { name: "Mobile Plan", price: hre.ethers.parseEther("0.006"), duration: 30 * 24 * 60 * 60 },
   ];
 
-  for (const sub of subscriptions) {
-    await SubscriptionManager.addSubscription(sub.name, sub.price, sub.duration);
-    console.log(`Added subscription: ${sub.name}`);
-  }
+  for (let i = 0; i < subscriptions.length; i++) {
+    const sub = subscriptions[i];
+    const existingSub = await SubscriptionManager.subscriptions(i);
 
+    if (existingSub.name === "") {
+      // Add new subscription if it doesn't exist
+      await SubscriptionManager.addSubscription(sub.name, sub.price, sub.duration);
+      console.log(`Added new subscription: ${sub.name}`);
+    } else if (
+      existingSub.name !== sub.name ||
+      existingSub.price.toString() !== sub.price.toString() ||
+      existingSub.duration.toString() !== sub.duration.toString()
+    ) {
+      // Update existing subscription if details have changed
+      await SubscriptionManager.updateSubscription(i, sub.name, sub.price, sub.duration);
+      console.log(`Updated subscription: ${sub.name}`);
+    } else {
+      console.log(`Subscription already exists and is up to date: ${sub.name}`);
+    }
+  }
   // Transfer ownership
-  //await SubscriptionManager.transferOwnership("0x4777616bBdbaeC94fa3821f33c0f3cC037C53bB5");
-  //console.log("Ownership transferred");
+  await SubscriptionManager.transferOwnership("0xFFF17C3C139Cb65028aFE4D192A7E630e9F5C99e");
+  console.log("Ownership transferred");
 };
 
 export default deploySubscriptionManager;

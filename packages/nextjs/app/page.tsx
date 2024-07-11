@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { ChannelManager } from "../components/ChannelManager";
+import ChannelManager from "../components/ChannelManager";
 import { Address, Balance } from "../components/scaffold-eth";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
