@@ -2,56 +2,41 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 
-/**
- * Deploys a contract named "YourContract" using the deployer account and
- * constructor arguments set to the deployer address
- *
- * @param hre HardhatRuntimeEnvironment object.
- */
-const deployMockServiceProvider: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  /*
-    On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
-
-    When deploying to live networks (e.g `yarn deploy --network sepolia`), the deployer account
-    should have sufficient balance to pay for the gas fees for contract creation.
-
-    You can generate a random account with `yarn generate` which will fill DEPLOYER_PRIVATE_KEY
-    with a random private key in the .env file (then used on hardhat.config.ts)
-    You can run the `yarn account` command to check your balance in every network.
-  */
+const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  const mockServiceProvider = await deploy("MockServiceProvider", {
+  await deploy("SubscriptionManager", {
     from: deployer,
     args: [],
     log: true,
   });
 
-  // Deploy SimpleStateChannel contract
-  const simpleStateChannel = await deploy("SimpleStateChannel", {
-    from: deployer,
-    args: [mockServiceProvider.address],
-    log: true,
-  });
-  // Set state channel address in MockServiceProvider contract
-  const mockServiceProviderContract = await hre.ethers.getContract<Contract>("MockServiceProvider", deployer);
-  await mockServiceProviderContract.setStateChannelAddress(simpleStateChannel.address);
+  console.log("SubscriptionManager deployed successfully");
 
-  // Add subscription types to MockServiceProvider contract
-  const subscriptionTypes = [
-    { name: "educateSub", fee: hre.ethers.parseEther("0.0005") },
-    { name: "farmpointSub", fee: hre.ethers.parseEther("0.0006") },
+  const SubscriptionManager = await hre.ethers.getContract<Contract>("SubscriptionManager", deployer);
+
+  // Define subscriptions
+  const subscriptions = [
+    { name: "Rent", price: hre.ethers.parseEther("0.005"), duration: 30 * 24 * 60 * 60 },
+    { name: "Utilities", price: hre.ethers.parseEther("0.002"), duration: 30 * 24 * 60 * 60 },
+    { name: "Internet", price: hre.ethers.parseEther("0.005"), duration: 30 * 24 * 60 * 60 },
+    { name: "Streaming", price: hre.ethers.parseEther("0.0015"), duration: 30 * 24 * 60 * 60 },
+    { name: "Gym", price: hre.ethers.parseEther("0.4"), duration: 30 * 24 * 60 * 60 },
+    { name: "Food Delivery", price: hre.ethers.parseEther("0.001"), duration: 30 * 24 * 60 * 60 },
+    { name: "Mobile Plan", price: hre.ethers.parseEther("0.006"), duration: 30 * 24 * 60 * 60 },
   ];
 
-  for (const sub of subscriptionTypes) {
-    await mockServiceProviderContract.addSubscriptionType(sub.name, sub.fee);
-    console.log(`Added subscription type: ${sub.name}`);
+  for (const sub of subscriptions) {
+    await SubscriptionManager.addSubscription(sub.name, sub.price, sub.duration);
+    console.log(`Added subscription: ${sub.name}`);
   }
+
+  // Transfer ownership
+  //await SubscriptionManager.transferOwnership("0x4777616bBdbaeC94fa3821f33c0f3cC037C53bB5");
+  //console.log("Ownership transferred");
 };
 
-export default deployMockServiceProvider;
+export default deploySubscriptionManager;
 
-// Tags are useful if you have multiple deploy files and only want to run one of them.
-// e.g. yarn deploy --tags YourContract
-deployMockServiceProvider.tags = ["MockServiceProvider", "StateChannel"];
+deploySubscriptionManager.tags = ["SubscriptionManager"];
