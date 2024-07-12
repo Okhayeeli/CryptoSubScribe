@@ -2,57 +2,65 @@
 
 import React from "react";
 import { SubscriptionIcon } from "../../components/SubscriptionIcon";
+import { NextPage } from "next";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
-const useActiveSubscriptions = () => {
+export type SubscriptionType =
+  | "Rent"
+  | "Utilities"
+  | "Internet"
+  | "Streaming"
+  | "Gym"
+  | "Food Delivery"
+  | "Mobile Plan";
+
+interface Subscription {
+  id: bigint;
+  name: string;
+  price: bigint;
+  duration: bigint;
+}
+
+const ViewSubscription: NextPage = () => {
   const { address } = useAccount();
-  const { data: activeSubscriptions, isLoading: isLoadingActiveSubscriptions } = useScaffoldReadContract({
+
+  const { data: activeSubsData, isLoading: isLoadingActiveSubscriptions } = useScaffoldReadContract({
     contractName: "SubscriptionManager",
     functionName: "getActiveSubscriptions",
     args: [address],
   });
 
-  return { activeSubscriptions, isLoadingActiveSubscriptions };
-};
-
-const useAllSubscriptions = () => {
   const { data: allSubscriptions, isLoading: isLoadingAllSubscriptions } = useScaffoldReadContract({
     contractName: "SubscriptionManager",
     functionName: "getAllSubscriptions",
   });
 
-  return { allSubscriptions, isLoadingAllSubscriptions };
-};
-
-const ViewSubscription: React.FC = () => {
-  const { activeSubscriptions, isLoadingActiveSubscriptions } = useActiveSubscriptions();
-  const { allSubscriptions, isLoadingAllSubscriptions } = useAllSubscriptions();
+  const { data: channelBalance } = useScaffoldReadContract({
+    contractName: "SubscriptionManager",
+    functionName: "getChannelBalance",
+    args: [address],
+  });
 
   if (isLoadingActiveSubscriptions || isLoadingAllSubscriptions) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   }
 
-  const activeSubscriptionList =
-    allSubscriptions?.filter(
-      subscription =>
-        Array.isArray(activeSubscriptions) &&
-        activeSubscriptions.some(activeSubscription => activeSubscription.id === subscription.id),
-    ) ?? [];
+  const activeSubscriptions = allSubscriptions?.filter((sub, index) => activeSubsData?.[index]);
 
   return (
     <div className="flex items-center flex-col flex-grow pt-10">
       <div className="container mx-auto p-4 flex flex-col items-center">
-        <h1 className="text-5xl font-medium italic text-center mb-4 mt-3">Active Subscriptions</h1>
-
-        {activeSubscriptionList && activeSubscriptionList.length > 0 ? (
-          activeSubscriptionList.map((subscription: any, index: number) => (
+        <h1 className="text-5xl font-bold italic text-center mb-4 mt-3">Active Subscriptions</h1>
+        <p className="text-xl mb-4">Channel Balance: {channelBalance ? formatEther(channelBalance) : "0"} ETH</p>
+        {activeSubscriptions && activeSubscriptions.length > 0 ? (
+          activeSubscriptions.map((subscription: Subscription, index: number) => (
             <div key={index} className="bg-base-100 shadow-xl rounded-box p-4 m-4 w-full max-w-2xl">
               <div className="flex justify-evenly">
                 <div className="flex flex-col items-center">
                   <div className="w-24 h-24 relative">
-                    <SubscriptionIcon type={subscription.name} />
+                    <SubscriptionIcon type={subscription.name as SubscriptionType} />
                     <h2 className="text-2xl font-semibold">{subscription.name}</h2>
                   </div>
                   <div className="flex flex-col items-center">
@@ -64,7 +72,7 @@ const ViewSubscription: React.FC = () => {
             </div>
           ))
         ) : (
-          <h2 className="text-xl font-bold text-center mb-4 mt-3">No active subscriptions</h2>
+          <p>No active subscriptions found.</p>
         )}
       </div>
     </div>

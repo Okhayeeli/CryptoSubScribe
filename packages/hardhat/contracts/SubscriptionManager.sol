@@ -23,17 +23,13 @@ contract SubscriptionManager is Ownable {
 
     mapping(uint256 => Subscription) public subscriptions;
     mapping(address => Channel) public channels;
-    mapping(address => uint256[]) public activeSubscriptions;
     uint256 public subscriptionCount;
 
     event SubscriptionAdded(uint256 id, string name, uint256 price, uint256 duration);
     event ChannelOpened(address indexed user, uint256 balance);
     event ChannelClosed(address indexed user, uint256 finalBalance);
     event Withdraw(address indexed owner, uint256 amount);
-
-    constructor() {
-        // Constructor logic (if any)
-    }
+    event SubscriptionActivated(address indexed user, uint256 subscriptionId);
 
     function openChannel() external payable {
         require(channels[msg.sender].user == address(0), "Channel already exists");
@@ -63,12 +59,6 @@ contract SubscriptionManager is Ownable {
         emit SubscriptionAdded(newId, name, price, duration);
     }
 
-    function verifySubscription(address user, uint256 subscriptionId, uint256 timestamp, bytes memory signature) public pure returns (bool) {
-        bytes32 message = keccak256(abi.encodePacked(user, subscriptionId, timestamp));
-        bytes32 ethSignedMessageHash = message.toEthSignedMessageHash();
-        return ethSignedMessageHash.recover(signature) == user;
-    }
-
     function getAllSubscriptions() external view returns (Subscription[] memory) {
         Subscription[] memory allSubscriptions = new Subscription[](subscriptionCount);
         
@@ -78,35 +68,30 @@ contract SubscriptionManager is Ownable {
         
         return allSubscriptions;
     }
-    function activateSubscription(uint256 subscriptionId) external {
-    require(channels[msg.sender].user != address(0), "Channel does not exist");
-    require(subscriptionId < subscriptionCount, "Invalid subscription ID");
-    require(channels[msg.sender].balance >= subscriptions[subscriptionId].price, "Insufficient balance");
-    
-    channels[msg.sender].balance -= subscriptions[subscriptionId].price;
-    channels[msg.sender].activeSubscriptions[subscriptionId] = true;
-    activeSubscriptions[msg.sender].push(subscriptionId);}
 
-    /**
-     * @dev Gets the active subscriptions for a user
-     * @param user The address of the user
-     * @return An array of booleans representing active subscriptions
-     */
-    function getActiveSubscriptions(address user) external view returns (bool[] memory) {
-    require(channels[user].user != address(0), "Channel does not exist");
-
-    bool[] memory activeSubs = new bool[](subscriptionCount);
-    for (uint256 i = 0; i < subscriptionCount; i++) {
-        activeSubs[i] = channels[user].activeSubscriptions[i];
+    function activateSubscription(uint256 subscriptionId, /* uint256 nonce, */ bytes memory signature) external {
+        require(channels[msg.sender].user != address(0), "Channel does not exist");
+        require(subscriptionId < subscriptionCount, "Invalid subscription ID");
+        Subscription storage sub = subscriptions[subscriptionId];
+        require(channels[msg.sender].balance >= sub.price, "Insufficient balance");
+        
+        
+        require(signature.length == 65, "Invalid signature length");
+        
+        channels[msg.sender].balance -= sub.price;
+        channels[msg.sender].activeSubscriptions[subscriptionId] = true;
+        emit SubscriptionActivated(msg.sender, subscriptionId);
     }
 
-    return activeSubs;
-}
+    function getActiveSubscriptions(address user) external view returns (bool[] memory) {
+        require(channels[user].user != address(0), "Channel does not exist");
 
-    function getSubscriptionDetails(uint256 id) external view returns (string memory, uint256, uint256) {
-        require(id < subscriptionCount, "Invalid subscription ID");
-        Subscription memory sub = subscriptions[id];
-        return (sub.name, sub.price, sub.duration);
+        bool[] memory activeSubs = new bool[](subscriptionCount);
+        for (uint256 i = 0; i < subscriptionCount; i++) {
+            activeSubs[i] = channels[user].activeSubscriptions[i];
+        }
+
+        return activeSubs;
     }
 
     function getChannelBalance(address user) external view returns (uint256) {
