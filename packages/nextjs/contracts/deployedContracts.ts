@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   11155111: {
     SubscriptionManager: {
-      address: "0x707BADcb6d42706A54A53a41804cE1c919E7a88b",
+      address: "0xE6AB49e3ebbb7af31A40A7e679b85f19D1A3Ab81",
       abi: [
         {
           anonymous: false,
@@ -141,11 +141,6 @@ const deployedContracts = {
               internalType: "uint256",
               name: "subscriptionId",
               type: "uint256",
-            },
-            {
-              internalType: "bytes",
-              name: "signature",
-              type: "bytes",
             },
           ],
           name: "activateSubscription",

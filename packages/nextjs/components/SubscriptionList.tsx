@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SubscriptionIcon } from "./SubscriptionIcon";
-import { ethers } from "ethers";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 export type SubscriptionType =
   | "Rent"
@@ -30,22 +29,19 @@ const SubscriptionList: React.FC<{ subscription: Subscription }> = ({ subscripti
   const [channelOpen, setChannelOpen] = useState(false);
   const [channelBalance, setChannelBalance] = useState<bigint>(BigInt(0));
 
-  useScaffoldReadContract({
-    contractName: "SubscriptionManager",
-    functionName: "getAllSubscriptions",
-  });
-
   const { data: channelData } = useScaffoldReadContract({
     contractName: "SubscriptionManager",
     functionName: "channels",
     args: [userAddress],
   });
 
-  const { data: balanceData } = useScaffoldReadContract({
+  const { data: balanceData, refetch: refetchBalance } = useScaffoldReadContract({
     contractName: "SubscriptionManager",
     functionName: "getChannelBalance",
     args: [userAddress],
   });
+
+  const { writeContractAsync: activateSubscription } = useScaffoldWriteContract("SubscriptionManager");
 
   useEffect(() => {
     const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -74,41 +70,31 @@ const SubscriptionList: React.FC<{ subscription: Subscription }> = ({ subscripti
     }
 
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-
-      const timestamp = Math.floor(Date.now() / 1000);
-      const message = ethers.solidityPacked(
-        ["address", "uint256", "uint256"],
-        [userAddress, BigInt(subscription.id), BigInt(timestamp)],
-      );
-
-      // Sign the message
-      const signature = await signer.signMessage(ethers.getBytes(message));
-
-      console.log("Subscription signed:", {
-        user: userAddress,
-        subscriptionId: subscription.id,
-        timestamp: timestamp,
-        signature: signature,
+      await activateSubscription({
+        args: [subscription.id],
+        functionName: "activateSubscription",
       });
 
+      console.log("Subscription activated successfully");
+      refetchBalance();
       router.push("/viewSubscription");
     } catch (error) {
-      console.error("Error signing subscription message", error);
+      console.error("Error activating subscription", error);
     }
   };
 
   return (
     <div className="subscription-card border p-6 rounded-lg shadow-lg flex flex-col items-center">
       <div className="flex items-center justify-center mb-4">
-        <div className="w-24 h-24 relative"></div>
-        <SubscriptionIcon type={subscription.name as SubscriptionType} />
+        <div className="w-24 h-24 relative">
+          <SubscriptionIcon type={subscription.name as SubscriptionType} />
+        </div>
       </div>
       <div className="subscription-details text-center">
         <h3 className="text-2xl font-semibold mb-2">{subscription.name}</h3>
         <p className="mb-2">Price: {formatEther(subscription.price)} ETH</p>
         <p className="mb-4">Duration: {Number(subscription.duration) / (24 * 60 * 60)} days</p>
+        <p className="mb-4">Channel Balance: {formatEther(channelBalance)} ETH</p>
         <button
           className="btn btn-primary mt-4"
           onClick={() => handleBuySubscription(subscription)}
@@ -118,7 +104,7 @@ const SubscriptionList: React.FC<{ subscription: Subscription }> = ({ subscripti
             ? "Open Channel"
             : channelBalance < subscription.price
               ? "Insufficient Balance"
-              : "Sign Subscription"}
+              : "Activate Subscription"}
         </button>
       </div>
     </div>

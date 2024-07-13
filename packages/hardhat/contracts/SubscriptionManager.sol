@@ -69,19 +69,16 @@ contract SubscriptionManager is Ownable {
         return allSubscriptions;
     }
 
-    function activateSubscription(uint256 subscriptionId, /* uint256 nonce, */ bytes memory signature) external {
-        require(channels[msg.sender].user != address(0), "Channel does not exist");
-        require(subscriptionId < subscriptionCount, "Invalid subscription ID");
-        Subscription storage sub = subscriptions[subscriptionId];
-        require(channels[msg.sender].balance >= sub.price, "Insufficient balance");
-        
-        
-        require(signature.length == 65, "Invalid signature length");
-        
-        channels[msg.sender].balance -= sub.price;
-        channels[msg.sender].activeSubscriptions[subscriptionId] = true;
-        emit SubscriptionActivated(msg.sender, subscriptionId);
-    }
+    function activateSubscription(uint256 subscriptionId) external {
+    require(channels[msg.sender].user != address(0), "Channel does not exist");
+    require(subscriptionId < subscriptionCount, "Invalid subscription ID");
+    Subscription storage sub = subscriptions[subscriptionId];
+    require(channels[msg.sender].balance >= sub.price, "Insufficient balance");
+    
+    channels[msg.sender].balance -= sub.price;
+    channels[msg.sender].activeSubscriptions[subscriptionId] = true;
+    emit SubscriptionActivated(msg.sender, subscriptionId);
+}
 
     function getActiveSubscriptions(address user) external view returns (bool[] memory) {
         require(channels[user].user != address(0), "Channel does not exist");
