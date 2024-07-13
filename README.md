@@ -81,6 +81,9 @@ Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob
      1. Duration Calculation: Implement off-chain duration calculation to automate subscription management.
      2. Off-chain Messaging: Integrate web3 to enable feeless communication for enhanced user interactions.
 
+    ## milestone
+  1. Is it possible to sign on the frontend and have the amount for a subscription deducted form the subscription manager??
+  2. 
      ## Acknowledgments
      Scaffold-ETH for providing a robust framework for Ethereum development.
      The Ethereum community for continuous support and development.
