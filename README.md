@@ -36,7 +36,7 @@ This command starts a local Ethereum network using Hardhat. The network runs on 
 
 3. in a second terminal window, 🛰 deploy your contract (locally):
 
-cd challenge-0-simple-nft
+cd CryptoSubScribe
 yarn deploy
 ```
 
@@ -45,6 +45,7 @@ This command deploys a test smart contract to the local network. The contract is
 4. On a third terminal, start your NextJS app:
 
 ```
+cd CryptoSubScribe
 yarn start
 ```
 
