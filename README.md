@@ -12,7 +12,7 @@
        🎮 Potential for Gaming: Consider extending state channel functionality to gaming and interactive applications for real-time, feeless transactions.
 
 
-Gefore you begin, you need to install the following tools:
+Before you begin, you need to install the following tools:
 
 Node (>= v18.17)
 Yarn (v1 or v2+)
@@ -28,15 +28,15 @@ yarn install
 ```
 
 2. In the same terminal, start your local network (a local instance of a blockchain):
-
+```
 yarn chain
 ```
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
 
-3. in a second terminal window, 🛰 deploy your contract (locally):
-
-cd challenge-0-simple-nft
+3. In a second terminal window, 🛰 deploy your contract (locally):
+```
+cd CryptoSubScribe
 yarn deploy
 ```
 
@@ -45,6 +45,7 @@ This command deploys a test smart contract to the local network. The contract is
 4. On a third terminal, start your NextJS app:
 
 ```
+cd CryptoSubScribe
 yarn start
 ```
 
@@ -81,6 +82,9 @@ Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob
      1. Duration Calculation: Implement off-chain duration calculation to automate subscription management.
      2. Off-chain Messaging: Integrate web3 to enable feeless communication for enhanced user interactions.
 
-     ## Acknowledgments
+## milestone
+  1. Is it possible to sign on the frontend and have the amount for a subscription deducted form the subscription manager??
+  2. 
+## Acknowledgments
      Scaffold-ETH for providing a robust framework for Ethereum development.
      The Ethereum community for continuous support and development.
