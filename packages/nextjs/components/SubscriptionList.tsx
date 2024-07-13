@@ -77,7 +77,6 @@ const SubscriptionList: React.FC<{ subscription: Subscription }> = ({ subscripti
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
-      // Create the message to sign
       const timestamp = Math.floor(Date.now() / 1000);
       const message = ethers.solidityPacked(
         ["address", "uint256", "uint256"],
