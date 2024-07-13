@@ -28,14 +28,14 @@ yarn install
 ```
 
 2. In the same terminal, start your local network (a local instance of a blockchain):
-
+```
 yarn chain
 ```
 
 This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
-
-3. in a second terminal window, 🛰 deploy your contract (locally):
-
+```
+3. In a second terminal window, 🛰 deploy your contract (locally):
+```
 cd CryptoSubScribe
 yarn deploy
 ```
