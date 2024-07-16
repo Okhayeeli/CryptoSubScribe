@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SubscriptionManager is Ownable {
-    using ECDSA for bytes32;
 
     struct Subscription {
         uint256 id;
@@ -78,7 +76,30 @@ contract SubscriptionManager is Ownable {
     channels[msg.sender].balance -= sub.price;
     channels[msg.sender].activeSubscriptions[subscriptionId] = true;
     emit SubscriptionActivated(msg.sender, subscriptionId);
-}
+    }
+
+
+    function activateSubscriptionsBatch(uint256[] calldata subscriptionIds) external {
+    require(channels[msg.sender].user != address(0), "Channel does not exist");
+    uint256 totalCost = 0;
+    
+       for (uint256 i = 0; i < subscriptionIds.length; i++) {
+          uint256 subscriptionId = subscriptionIds[i];
+          require(subscriptionId < subscriptionCount, "Invalid subscription ID");
+          Subscription storage sub = subscriptions[subscriptionId];
+           totalCost += sub.price;
+       }
+    
+    require(channels[msg.sender].balance >= totalCost, "Insufficient balance");
+    
+    channels[msg.sender].balance -= totalCost;
+    
+        for (uint256 i = 0; i < subscriptionIds.length; i++) {
+          uint256 subscriptionId = subscriptionIds[i];
+          channels[msg.sender].activeSubscriptions[subscriptionId] = true;
+          emit SubscriptionActivated(msg.sender, subscriptionId);
+       }
+    }
 
     function getActiveSubscriptions(address user) external view returns (bool[] memory) {
         require(channels[user].user != address(0), "Channel does not exist");

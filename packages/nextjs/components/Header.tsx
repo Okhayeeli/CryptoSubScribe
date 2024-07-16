@@ -25,6 +25,11 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <CheckIcon className="h-4 w-4" />,
   },
   {
+    label: "batch sub",
+    href: "/batchSub",
+    icon: <CheckIcon className="h-4 w-4" />,
+  },
+  {
     label: "Acive subscriptions",
     href: "/viewSubscription",
     icon: <BellIcon className="h-4 w-4" />,
