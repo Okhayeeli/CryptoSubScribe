@@ -20,13 +20,8 @@ export const menuLinks: HeaderMenuLink[] = [
     href: "/",
   },
   {
-    label: "Subscribe",
-    href: "/SubscriptionManager",
-    icon: <CheckIcon className="h-4 w-4" />,
-  },
-  {
-    label: "batch sub",
-    href: "/batchSub",
+    label: "subscribe",
+    href: "/BatchSubscription",
     icon: <CheckIcon className="h-4 w-4" />,
   },
   {
