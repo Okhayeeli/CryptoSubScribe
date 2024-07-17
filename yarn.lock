@@ -7328,9 +7328,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.3.4":
-  version: 11.3.4
-  resolution: "framer-motion@npm:11.3.4"
+"framer-motion@npm:^11.3.6":
+  version: 11.3.6
+  resolution: "framer-motion@npm:11.3.6"
   dependencies:
     tslib: ^2.4.0
   peerDependencies:
@@ -7344,7 +7344,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 5b5e1b80c0230634e13a308f08cf73ad79a88726dbf47c4b283696dfacc3a7e65406b189d13037e6517dc8d837c1d574574246969531233de1caf54a1f093d6f
+  checksum: 3342a1026f25317a9963a1333a14ff78ab8e3e81bd05e09d95e604a8a3c5391c4d814172eb8e79494a65cb3a316bb19be61add481f0b9785fd5317a6859b036f
   languageName: node
   linkType: hard
 
@@ -11883,7 +11883,7 @@ __metadata:
     "@types/canvas-confetti": ^1
     canvas-confetti: ^1.9.3
     ethers: ^6.13.1
-    framer-motion: ^11.3.4
+    framer-motion: ^11.3.6
     husky: ^8.0.1
     lint-staged: ^13.0.3
     react-icons: ^5.2.1

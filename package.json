@@ -48,7 +48,7 @@
     "@openzeppelin/contracts": "^5.0.2",
     "canvas-confetti": "^1.9.3",
     "ethers": "^6.13.1",
-    "framer-motion": "^11.3.4",
+    "framer-motion": "^11.3.6",
     "react-icons": "^5.2.1"
   }
 }
