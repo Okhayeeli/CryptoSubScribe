@@ -70,6 +70,7 @@ contract SubscriptionManager is Ownable {
     function activateSubscription(uint256 subscriptionId) external {
     require(channels[msg.sender].user != address(0), "Channel does not exist");
     require(subscriptionId < subscriptionCount, "Invalid subscription ID");
+    require(!channels[msg.sender].activeSubscriptions[subscriptionId], "Subscription already active");
     Subscription storage sub = subscriptions[subscriptionId];
     require(channels[msg.sender].balance >= sub.price, "Insufficient balance");
     
@@ -86,13 +87,14 @@ contract SubscriptionManager is Ownable {
        for (uint256 i = 0; i < subscriptionIds.length; i++) {
           uint256 subscriptionId = subscriptionIds[i];
           require(subscriptionId < subscriptionCount, "Invalid subscription ID");
+          require(!channels[msg.sender].activeSubscriptions[subscriptionId], "Subscription already active");
           Subscription storage sub = subscriptions[subscriptionId];
-           totalCost += sub.price;
+          totalCost += sub.price;
        }
     
-    require(channels[msg.sender].balance >= totalCost, "Insufficient balance");
+       require(channels[msg.sender].balance >= totalCost, "Insufficient balance");
     
-    channels[msg.sender].balance -= totalCost;
+       channels[msg.sender].balance -= totalCost;
     
         for (uint256 i = 0; i < subscriptionIds.length; i++) {
           uint256 subscriptionId = subscriptionIds[i];

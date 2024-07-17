@@ -68,8 +68,8 @@ const BatchSubscription: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 bg-gradient-to-br from-purple-800 to-blue-600 min-h-screen text-white">
-      <h1 className="text-4xl font-bold mb-8 text-center">Batch Subscription Activation</h1>
+    <div className="container mx-auto p-4 bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
+      <h1 className="text-4xl font-bold mb-8 text-center">batch for lower gas</h1>
 
       <div className="mb-8 text-center">
         <p className="text-xl mb-2">Channel Balance: {formatEther(channelBalance)} ETH</p>
@@ -104,16 +104,16 @@ const BatchSubscription: React.FC = () => {
           allSubscriptions.map((subscription: Subscription) => (
             <motion.div
               key={subscription.id.toString()}
-              className={`bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 cursor-pointer ${
+              className={`bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl p-6 cursor-pointer ${
                 selectedSubscriptions.find(s => s.id === subscription.id) ? "ring-4 ring-yellow-400" : ""
               }`}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, brightness: 1.2 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleSelectSubscription(subscription)}
             >
-              <h2 className="text-2xl font-semibold mb-2">{subscription.name}</h2>
-              <p className="text-lg">Price: {formatEther(subscription.price)} ETH</p>
-              <p>Duration: {Number(subscription.duration) / (24 * 60 * 60)} days</p>
+              <h2 className="text-2xl font-semibold mb-2 text-purple-300">{subscription.name}</h2>
+              <p className="text-lg text-white">Price: {formatEther(subscription.price)} ETH</p>
+              <p className="text-gray-300">Duration: {Number(subscription.duration) / (24 * 60 * 60)} days</p>
             </motion.div>
           ))}
       </div>

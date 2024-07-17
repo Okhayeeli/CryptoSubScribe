@@ -2,6 +2,7 @@
 
 import React from "react";
 import { SubscriptionIcon } from "../../components/SubscriptionIcon";
+import { motion } from "framer-motion";
 import { NextPage } from "next";
 import { formatEther } from "viem";
 import { useAccount } from "wagmi";
@@ -44,36 +45,50 @@ const ViewSubscription: NextPage = () => {
   });
 
   if (isLoadingActiveSubscriptions || isLoadingAllSubscriptions) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return <div className="flex justify-center items-center min-h-screen text-white">Loading...</div>;
   }
 
   const activeSubscriptions = allSubscriptions?.filter((sub, index) => activeSubsData?.[index]);
 
   return (
-    <div className="flex items-center flex-col flex-grow pt-10">
-      <div className="container mx-auto p-4 flex flex-col items-center">
-        <h1 className="text-5xl font-bold italic text-center mb-4 mt-3">Active Subscriptions</h1>
-        <p className="text-xl mb-4">Channel Balance: {channelBalance ? formatEther(channelBalance) : "0"} ETH</p>
-        {activeSubscriptions && activeSubscriptions.length > 0 ? (
-          activeSubscriptions.map((subscription: Subscription, index: number) => (
-            <div key={index} className="bg-base-100 shadow-xl rounded-box p-4 m-4 w-full max-w-2xl">
-              <div className="flex justify-evenly">
+    <div className="bg-gray-900 min-h-screen p-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-8 text-white">Active Subscriptions</h1>
+        <div className="mb-8 text-center bg-gray-800 rounded-lg p-4 shadow-md">
+          <p className="text-2xl text-blue-400">
+            Channel Balance: {channelBalance ? formatEther(channelBalance) : "0"} ETH
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {activeSubscriptions && activeSubscriptions.length > 0 ? (
+            activeSubscriptions.map((subscription: Subscription, index: number) => (
+              <motion.div
+                key={subscription.id.toString()}
+                className="bg-gray-800 rounded-lg p-6 shadow-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
                 <div className="flex flex-col items-center">
-                  <div className="w-24 h-24 relative">
+                  <div className="w-16 h-16 relative mb-4 bg-gray-700 rounded-full flex items-center justify-center">
                     <SubscriptionIcon type={subscription.name as SubscriptionType} />
-                    <h2 className="text-2xl font-semibold">{subscription.name}</h2>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <p className="text-xl mb-2">Price: {parseFloat(formatEther(subscription.price)).toFixed(4)} ETH</p>
-                    <p className="text-lg mb-2">Duration: {Number(subscription.duration) / (24 * 60 * 60)} days</p>
+                  <h2 className="text-xl font-semibold mb-2 text-white">{subscription.name}</h2>
+                  <div className="text-center">
+                    <p className="text-lg mb-1 text-blue-400">
+                      Price: {parseFloat(formatEther(subscription.price)).toFixed(4)} ETH
+                    </p>
+                    <p className="text-md text-gray-400">
+                      Duration: {Number(subscription.duration) / (24 * 60 * 60)} days
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No active subscriptions found.</p>
-        )}
+              </motion.div>
+            ))
+          ) : (
+            <p className="col-span-full text-center text-xl text-gray-400">No active subscriptions found.</p>
+          )}
+        </div>
       </div>
     </div>
   );
