@@ -107,7 +107,7 @@ const BatchSubscription: React.FC = () => {
               className={`bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl p-6 cursor-pointer ${
                 selectedSubscriptions.find(s => s.id === subscription.id) ? "ring-4 ring-yellow-400" : ""
               }`}
-              whileHover={{ scale: 1.05, brightness: 1.2 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleSelectSubscription(subscription)}
             >
