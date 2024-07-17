@@ -60,6 +60,7 @@ Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob
 
  Paying for Subscriptions:
     - Use the deposited ETH to pay for two or more subscribed services and pay less for gas.
+  on close of channel, balance is returned to the subscriber  
 
  Future Enhancements:
      - Duration Calculation: Implement off-chain duration calculation to automate subscription management.
