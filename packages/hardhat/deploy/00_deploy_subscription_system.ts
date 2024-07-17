@@ -45,8 +45,8 @@ const deploySubscriptionManager: DeployFunction = async function (hre: HardhatRu
   console.log("All Subscriptions:", allSubscriptions);
 
   // Transfer ownership
-  await SubscriptionManager.transferOwnership("0xFFF17C3C139Cb65028aFE4D192A7E630e9F5C99e");
-  console.log("Ownership transferred");
+  //await SubscriptionManager.transferOwnership("0xFFF17C3C139Cb65028aFE4D192A7E630e9F5C99e");
+  //console.log("Ownership transferred");
 };
 
 export default deploySubscriptionManager;
